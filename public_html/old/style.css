@@ -1,0 +1,283 @@
+body {
+  margin: 0 auto;
+  padding: 0;
+}
+
+h4 {
+  text-align: center;
+}
+
+.bg-1 {
+  padding: 50px;
+  /* background-color: #f5f5f5; */
+  border-bottom: 2px solid grey;
+}
+
+.bg-2 {
+  padding: 50px;
+  /* background-color: #ffffe0; */
+  border-bottom: 2px solid grey;
+}
+
+.box-inner {
+  position: relative;
+  margin: 0 auto;
+  padding: 50px;
+  width: 300px;
+  background-color: white;
+  text-align: center;
+}
+
+
+
+/* Задание 1 */
+
+.exercise-1 {
+  height: 300px;
+}
+
+.exercise-1 .box {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+}
+
+.exercise-1 .box-1 {
+  top: 0;
+  left: 0;
+  border: 2px solid red;
+}
+
+.exercise-1 .box-2 {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 2px solid blue;
+}
+
+.exercise-1 .box-3 {
+  right: 0;
+  bottom: 0;
+  border: 2px solid green;
+}
+
+/* Конец задания 1 */
+
+
+
+/* Задание 2 */
+
+.exercise-2 {
+  position: relative;
+  margin: 0 auto;
+  padding: 30px;
+  width: 200px;
+  height: 150px;
+  border: 2px solid green;
+}
+
+.exercise-2 .box-1 {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border: 2px solid red;
+}
+
+/* Конец задания 2 */
+
+
+
+/* Задание 3 */
+
+.exercise-3 {
+  width: 600px;
+}
+
+.exercise-3 .box {
+  display: inline-block;
+  margin: 0 auto;
+  width: 100px;
+  height: 100px;
+}
+
+.exercise-3 .box:not(:last-child) {
+  margin-right: 50px;
+}
+
+.exercise-3 .box-1 {
+  border: 2px solid red;
+}
+
+.exercise-3 .box-2 {
+  border: 2px solid blue;
+}
+
+.exercise-3 .box-3 {
+  border: 2px solid green;
+}
+
+/* Конец задания 3 */
+
+
+
+/* Задание 4 */
+
+.exercise-4 {
+  position: relative;
+  margin: 0 auto;
+  width: 300px;
+  height: 300px;
+  background-color: green;
+  border-radius: 200px;
+}
+
+.exercise-4 .box {
+  position: absolute;
+  background-color: white;
+  transform: translate(-50%, -50%);
+}
+
+.exercise-4 .box-1 {
+  width: 50px;
+  height: 50px;
+  top: 30%;
+  left: 30%;
+  border-radius: 25px;
+}
+
+.exercise-4 .box-2 {
+  width: 50px;
+  height: 50px;
+  top: 30%;
+  left: 70%;
+  border-radius: 25px;
+}
+
+.exercise-4 .box-3 {
+  width: 30px;
+  height: 30px;
+  top: 50%;
+  left: 50%;
+}
+
+.exercise-4 .box-4 {
+  width: 100px;
+  height: 20px;
+  top: 70%;
+  left: 50%;
+}
+
+/* Конец задания 4 */
+
+
+
+/* Задание 5 */
+
+.exercise-5 {
+  position: relative;
+  height: 300px;
+}
+
+.exercise-5 .box {
+  display: inline-block;
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.exercise-5 .box-1 {
+  top: 20%;
+  left: 20%;
+  transform: translate( 0%, 0%);
+  border: 2px solid red;
+}
+
+.exercise-5 .box-2 {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 2px solid blue;
+}
+
+.exercise-5 .box-3 {
+  top: 80%;
+  left: 80%;
+  transform: translate(-100%, -100%);
+  border: 2px solid green;
+}
+
+/* Конец задания 5 */
+
+
+
+/* Задание 6 */
+
+.exercise-6 {
+  position: relative;
+  height: 200px;
+  background-color: green;
+}
+
+.exercise-6 .box {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background-color: white;
+}
+
+.exercise-6 .box-1 {
+  top: 30px;
+  left: 30px;
+}
+
+.exercise-6 .box-2 {
+  bottom: 30px;
+  right: 30px;
+}
+
+/* Конец задания 6 */
+
+
+
+/* Задание 7 */
+
+.exercise-7 {
+  position: relative;
+  height: 300px;
+}
+
+.exercise-7 .box {
+  display: inline-block;
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.exercise-7 .box-1 {
+  top: 20%;
+  left: 20%;
+  transform: translate( 0%, 0%);
+  background-color: red;
+}
+
+.exercise-7 .box-2 {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: blue;
+}
+
+.exercise-7 .box-3 {
+  top: 80%;
+  left: 80%;
+  transform: translate(-100%, -100%);
+  background-color: green;
+}
+
+/* Конец задания 7 */
+
+
+
+

@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <!-- Обязательные метатеги -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+
+    <title>Articles</title>
+  </head>
+  <body>
+    <ul class="nav pt-5 ps-5">
+        <li class="nav-item">
+            <a class="nav-link me-3 list-group-item-primary" style = "cursor: pointer;" href = "" onclick = "viewArticlesList(); return false;">Все статьи</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link list-group-item-primary" style = "cursor: pointer;" href = "" onclick = "viewAddArticlePage(); return false;">Добавить запись</a>
+        </li>
+    </ul>
+    <div class="container my-5 p-3" id = "outer"></div> <!-- border border-secondary -->
+
+
+    <script>
+        /* 
+        Навешиваем обработчик для события popstate, который вызывается,
+        когда пользователь переходит по истории и позволяет приложению обновлять свое состояние.
+        */
+        window.addEventListener("popstate", function(event) { 
+            router();
+        });
+        
+        /*
+        Далее смотрим на URL и отображаем контент в зависимости от того, что после "/".
+        */
+        function router() {
+            const pathname = location.pathname;
+            if (pathname == "/") { // Маршрут к главной странице (перечню всех статей).
+                viewArticlesList();
+            } else if (pathname == "/addArticle") {
+                viewAddArticlePage();
+            } else if (pathname.split("/")[1] == "article") {
+                viewIdArticle(pathname.split("/")[2]);
+            }
+        }
+        
+        
+        function viewArticlesList() {
+            //history.pushState(null, "Все статьи", ""); //Сохраняем в истории браузера и дописываем маршрут
+            outer.innerHTML = ""; // Очищаем страницу.
+            fetch("/php/getArticles.php")
+            .then(response => response.json())
+            .then(result => {
+                let inner = document.createElement("div");
+                inner.classList.add("container", "mx-auto", "p-3", "col-ml-10", "list-group", "bg-light");
+                    let listHead = document.createElement("div");
+                    listHead.classList.add("list-group-item", "list-group-item-primary");
+                        let rowHead = document.createElement("div");
+                        rowHead.classList.add("row", "fs-5"); 
+                        rowHead.innerHTML = `
+                            <div class = "col-1">№</div>
+                            <div class = "col">Заголовок</div>
+                            <div class = "col">Автор статьи</div>
+                            <div class = "col">Дата публикации</div>
+                        `;
+                    listHead.append(rowHead);
+                    
+                    let listBody = document.createElement("div");
+                    /*
+                    for (let i = 0; i < result.length; i++) {
+                        let item = document.createElement("div");
+                        item.classList.add("list-group-item", "list-group-item-action");
+                        item.innerHTML = `
+                        <div class = "row" style = "cursor: pointer;" onclick = "viewIdArticle(${result[i].id}); return false;">
+                            <div class = "col-1">${i + 1}</div>
+                            <div class = "col">${result[i].title}</div>
+                            <div class = "col">${result[i].author}</div>
+                            <div class = "col">${result[i].date_added}</div>
+                        </div>
+                        `;
+                        listBody.append(item);
+                    }
+                    */
+                    // Перепишем цикл for методом forEach, где article - элемент массива статей, а index - индекс элемента массива (id статьи).
+                    result.forEach((article, index) => {
+                        let item = document.createElement("div");
+                        item.classList.add("list-group-item", "list-group-item-action");
+                        item.innerHTML = `
+                        <a href = "article/${article.id}" class = "row" style = "cursor: pointer; text-decoration: none; color: black;" onclick = "viewIdArticle(${article.id}); return false;">
+                            <div class = "col-1">${index + 1}</div>
+                            <div class = "col">${article.title}</div>
+                            <div class = "col">${article.author}</div>
+                            <div class = "col">${article.date_added}</div>
+                        </a>
+                        `;
+                        listBody.append(item);
+                    });
+                    
+                inner.append(listHead);
+                inner.append(listBody);
+                outer.append(inner);
+            });
+        }
+        
+            
+        function viewAddArticlePage() {
+            history.pushState(null, "Добавление статьи", "/addArticle"); 
+            outer.innerHTML = "";
+            //console.log("нажата ссылка");
+            let inner = document.createElement("div");
+            inner.classList.add("container", "mx-auto", "p-3", "col-sm-7"); // "bg-light"
+            let form = document.createElement("form");
+            let div = document.createElement("div");
+            div.classList.add("mb-3");
+            let input = document.createElement("input");
+            input.classList.add("form-control", "mb-3");
+            input.name = "title";
+            input.placeholder = "Название статьи";
+            div.append(input);
+            form.append(div);
+            let textarea = document.createElement("textarea");
+            textarea.classList.add("form-control", "mb-3");
+            textarea.name = "text";
+            textarea.placeholder = "Текст статьи";
+            div.append(textarea);
+            form.append(div);
+            input = document.createElement("input");
+            input.classList.add("form-control", "mb-3");
+            input.name = "author";
+            input.placeholder = "Автор";
+            div.append(input);
+            form.append(div);
+            input = document.createElement("input");
+            input.classList.add("form-control", "btn", "btn-primary");
+            input.type = "submit";
+            input.value = "Добавить статью";
+            div.append(input);
+            form.append(div);
+            form.onsubmit = (event) => {
+                event.preventDefault(); // отменяем обычное поведение нажатия кнопки, то есть переход на другую страницу.
+                //console.log(event); Выводим событие.
+                //console.log(event.target); Выводим форму.
+                const form = event.target; // Сохраняем событие, которое произошло в форме.
+                const formData = new FormData(form);
+                fetch("/php/addArticle.php", {
+                    method: "POST",
+                    body: formData
+                }) .then(response => response.json())
+                   .then(result => {
+                       if(result.result == "success") {
+                            viewArticlesList();
+                       }
+                   })
+                
+            }
+            inner.append(form);
+            outer.append(inner);
+        }
+        
+        
+        function viewIdArticle(id) {
+            history.pushState(null, "Статья", "/article/" + id); 
+            outer.innerHTML = "";
+            
+            //const body = `{"id": "${id}"}`;
+            
+            const formData = new FormData(); // Другой вариант отправки
+            formData.append("id", id); // Ключ и значение
+            
+            fetch ("/php/getIdArticle.php", {
+                method: "POST",
+                body: formData
+            })  .then(response => response.json())
+                .then(result => {
+                
+                    let inner = document.createElement("div");
+                    inner.classList.add("container", "mx-auto", "p-3", "col-sm-10"); // "bg-light"
+                    
+                        let title = document.createElement("h4");
+                        title.classList.add("mb-4");
+                        title.innerHTML = `${result.title}`;
+                        let authorOuter = document.createElement("div");
+                        authorOuter.classList.add("d-flex", "justify-content-end");
+                            let author = document.createElement("span");
+                            author.innerHTML = `Автор статьи: ${result.author}`;
+                        authorOuter.append(author);
+                        
+                        let text = document.createElement("p");
+                        text.classList.add("my-4");
+                        text.innerHTML = `${result.text}`;
+                        
+                        let dateOuter = document.createElement("div");
+                        dateOuter.classList.add("d-flex", "justify-content-end");
+                            let date = document.createElement("p");
+                            const dateAdded = new Date(result.date_added); // Для изменения отображения даты
+                            date.innerHTML = `
+                                Опубликовано:<br/>
+                                ${dateAdded.getDate()}.${dateAdded.getMonth() + 1}.${dateAdded.getFullYear()} ${dateAdded.getHours()}:${dateAdded.getMinutes()}
+                            `; 
+                        dateOuter.append(date);
+                        
+                    inner.append(title);
+                    inner.append(authorOuter);
+                    inner.append(text);
+                    inner.append(dateOuter);
+                    outer.append(inner);
+                });
+        }
+        //viewArticlesList();  
+        router();
+    </script>
+    
+    <!-- Вариант 1: Bootstrap в связке с Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+  
+  </body>
+</html>
